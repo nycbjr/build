@@ -62,12 +62,12 @@ function check_product()
         return
     fi
 
-    if (echo -n $1 | grep -q -e "^baked_") ; then
-       BAKED_BUILD=$(echo -n $1 | sed -e 's/^baked_//g')
+    if (echo -n $1 | grep -q -e "^empire_") ; then
+       EMPIRE_BUILD=$(echo -n $1 | sed -e 's/^empire_//g')
     else
-       BAKED_BUILD=
+       EMPIRE_BUILD=
     fi
-    export BAKED_BUILD
+    export EMPIRE_BUILD
 
     CALLED_FROM_SETUP=true BUILD_SYSTEM=build/core \
         TARGET_PRODUCT=$1 \
@@ -447,7 +447,7 @@ function print_lunch_menu()
        echo "  (ohai, koush!)"
     fi
     echo
-    if [ "z${BAKED_DEVICES_ONLY}" != "z" ]; then
+    if [ "z${EMPIRE_DEVICES_ONLY}" != "z" ]; then
        echo "Breakfast menu... pick a combo:"
     else
        echo "Lunch menu... pick a combo:"
@@ -461,7 +461,7 @@ function print_lunch_menu()
         i=$(($i+1))
     done
 
-    if [ "z${BAKED_DEVICES_ONLY}" != "z" ]; then
+    if [ "z${EMPIRE_DEVICES_ONLY}" != "z" ]; then
        echo "... and don't forget the bacon!"
     fi
 
@@ -483,10 +483,10 @@ function brunch()
 function breakfast()
 {
     target=$1
-    BAKED_DEVICES_ONLY="true"
+    EMPIRE_DEVICES_ONLY="true"
     unset LUNCH_MENU_CHOICES
     add_lunch_combo full-eng
-    for f in `/bin/ls vendor/baked/vendorsetup.sh 2> /dev/null`
+    for f in `/bin/ls vendor/empire/vendorsetup.sh 2> /dev/null`
         do
             echo "including $f"
             . $f
@@ -502,8 +502,8 @@ function breakfast()
             # A buildtype was specified, assume a full device name
             lunch $target
         else
-            # This is probably just the BAKED model name
-            lunch baked_$target-userdebug
+            # This is probably just the EMPIRE model name
+            lunch empire_$target-userdebug
         fi
     fi
     return $?
@@ -639,7 +639,7 @@ function eat()
 {
     if [ "$OUT" ] ; then
         MODVERSION=`sed -n -e'/ro\.cm\.version/s/.*=//p' $OUT/system/build.prop`
-        ZIPFILE=baked-$MODVERSION-signed.zip
+        ZIPFILE=empire-$MODVERSION-signed.zip
         ZIPPATH=$OUT/$ZIPFILE
         if [ ! -f $ZIPPATH ] ; then
             echo "Nothing to eat"
@@ -1262,7 +1262,7 @@ function mka() {
 function mbot() {
     unset LUNCH_MENU_CHOICES
     croot
-    ./vendor/baked/bot/deploy.sh
+    ./vendor/empire/bot/deploy.sh
 }
 
 function cmka() {
